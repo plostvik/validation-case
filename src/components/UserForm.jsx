@@ -89,10 +89,11 @@ const validateForm = formState => {
   const errors = {};
   const { firstName, lastName, email, message } = formState;
 
-  if (isEmpty(firstName)) errors.firstName = 'First name is required';
-  if (isEmpty(lastName)) errors.lastName = 'Last name is required';
+  if (isEmpty(firstName, { ignore_whitespace: true })) errors.firstName = 'First name is required';
+  if (isEmpty(lastName, { ignore_whitespace: true })) errors.lastName = 'Last name is required';
   if (!isEmail(email)) errors.email = 'Enter a valid email address';
-  if (!isLength(message, { min: 10 })) errors.message = 'Message must be at least 10 characters long';
+  if (isEmpty(message, { ignore_whitespace: true }) || !isLength(message, { min: 10 }))
+    errors.message = 'Message must be at least 10 characters long';
 
   return errors;
 };
