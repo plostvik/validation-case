@@ -16,8 +16,8 @@ function UserForm() {
 
   const dispatch = useDispatch();
 
-  const updateStore = () => {
-    dispatch(setUserInfo(formState));
+  const updateStore = newData => {
+    dispatch(setUserInfo(newData));
   };
 
   const handleChange = e => {
