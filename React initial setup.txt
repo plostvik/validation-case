@@ -1,0 +1,117 @@
+I need to configure redux store in react app.  Create a store for the application to store first name, last name, email and message. Do not use redux toolkit
+ChatGPT
+Certainly! You can configure the Redux store for your application to manage the first name, last name, email, and message without using Redux Toolkit. Here's a step-by-step guide on how to set it up:
+
+Install Redux: If you haven't already installed Redux in your React project, you'll need to do that first. You can use the following command:
+
+bash
+Copy code
+npm install redux react-redux
+Create Action Types: Define the action types that your store will handle.
+
+javascript
+Copy code
+// actionTypes.js
+export const SET_USER_INFO = 'SET_USER_INFO';
+Create Actions: Create the action creator to manage the user information.
+
+javascript
+Copy code
+// actions.js
+import { SET_USER_INFO } from './actionTypes';
+
+export const setUserInfo = (firstName, lastName, email, message) => ({
+  type: SET_USER_INFO,
+  payload: { firstName, lastName, email, message }
+});
+Create Reducer: Create a reducer to handle the action and update the state.
+
+javascript
+Copy code
+// reducer.js
+import { SET_USER_INFO } from './actionTypes';
+
+const initialState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  message: ''
+};
+
+const userReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case SET_USER_INFO:
+      return {
+        ...state,
+        ...action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+export default userReducer;
+Create Store: Use the reducer to create the Redux store.
+
+javascript
+Copy code
+// store.js
+import { createStore } from 'redux';
+import userReducer from './reducer';
+
+const store = createStore(userReducer);
+
+export default store;
+Connect to React: Finally, connect the Redux store to your React application using the Provider component.
+
+javascript
+Copy code
+// index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import App from './App';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
+Now, you can use the useDispatch and useSelector hooks in your React components to dispatch actions and access the state.
+
+Here's an example of how you might use this inside a component:
+
+javascript
+Copy code
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserInfo } from './actions';
+
+function UserProfile() {
+  const dispatch = useDispatch();
+  const { firstName, lastName, email, message } = useSelector(state => state);
+
+  const handleUpdate = () => {
+    // Update user info (replace with your own logic)
+    dispatch(setUserInfo('John', 'Doe', 'john.doe@example.com', 'Hello, world!'));
+  };
+
+  return (
+    <div>
+      <p>First Name: {firstName}</p>
+      <p>Last Name: {lastName}</p>
+      <p>Email: {email}</p>
+      <p>Message: {message}</p>
+      <button onClick={handleUpdate}>Update</button>
+    </div>
+  );
+}
+
+export default UserProfile;
+This example code demonstrates how you can create a Redux store for managing user information without using Redux Toolkit.
+
+
+
+
