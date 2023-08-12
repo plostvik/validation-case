@@ -1,0 +1,121 @@
+I need to Update Readme.md with info about my github project. Requirements: Application description: 2 paragraphs, 4-10 Sentences. Information on how to install/run the developed application locally.
+
+My project - is a form which collects user data in a form of {
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: '',
+  };
+Form have validation and a submit button. After user press submit form is validationg and if everything is okey  - new data is stored into a redux store. After submitting new data to the store we're updating a table to show that data has been collected.
+
+Alsy my app has unit tests to test if form works and connects with store
+
+Packages used: redux, react-redux, validator
+ChatGPT
+Certainly! Below is a sample README.md for your GitHub project:
+
+Project Name
+Description
+This project consists of a user data collection form, gathering information such as the first name, last name, email, and a message from the user. The form includes validation to ensure that the data is correctly formatted and meets specific criteria before it's accepted. Once the user presses the submit button, and if validation is successful, the new data is stored in a Redux store.
+
+The application's functionality doesn't stop there; after submitting the new data to the store, a table is updated to visually represent that the data has been collected. This streamlined process ensures that the collected information is handled efficiently and visibly within the application's user interface. Unit tests are also included within the project, ensuring that the form's functionality and its connection with the store operate correctly.
+
+Installation and Running Locally
+Follow these instructions to get the project up and running on your local machine:
+
+Clone the repository:
+
+bash
+Copy code
+git clone https://github.com/username/your-repo-name.git
+Navigate to the project directory:
+
+bash
+Copy code
+cd your-repo-name
+Install required dependencies:
+
+Copy code
+npm install
+Run the application:
+
+sql
+Copy code
+npm start
+Packages Used
+redux: For managing the application's state.
+react-redux: For connecting React components to the Redux store.
+validator: For validation of form inputs.
+Testing
+To run the unit tests for the form and its connection with the store, execute the following command:
+
+bash
+Copy code
+npm test
+Contributing
+Feel free to contribute to this project by opening issues, submitting pull requests, or just by sharing ideas. Your contributions are always welcome!
+
+Make sure to replace username and your-repo-name with the appropriate GitHub username and repository name. You can also customize the README further to match the style or additional details relevant to your project.
+
+
+
+
+User
+can you write in a mdx 
+ChatGPT
+
+2 / 2
+
+Certainly! MDX is a combination of Markdown and JSX. It allows you to seamlessly write JSX in your Markdown documents. Below is your project description in MDX format:
+
+mdx
+Copy code
+# Project Name
+
+## Description
+
+This project consists of a user data collection form, gathering information such as the **first name**, **last name**, **email**, and a **message** from the user. The form includes validation to ensure that the data is correctly formatted and meets specific criteria before it's accepted. Once the user presses the submit button, and if validation is successful, the new data is stored in a Redux store.
+
+The application's functionality doesn't stop there; after submitting the new data to the store, a table is updated to visually represent that the data has been collected. This streamlined process ensures that the collected information is handled efficiently and visibly within the application's user interface. Unit tests are also included within the project, ensuring that the form's functionality and its connection with the store operate correctly.
+
+## Installation and Running Locally
+
+Follow these instructions to get the project up and running on your local machine:
+
+1. **Clone the repository:** 
+
+```bash
+git clone https://github.com/username/your-repo-name.git
+Navigate to the project directory:
+bash
+Copy code
+cd your-repo-name
+Install required dependencies:
+bash
+Copy code
+npm install
+Run the application:
+bash
+Copy code
+npm start
+Packages Used
+The application uses several npm packages to streamline its operations:
+
+redux: For managing the application's state.
+react-redux: For connecting React components to the Redux store.
+validator: For validation of form inputs.
+Testing
+To run the unit tests for the form and its connection with the store, execute the following command:
+
+bash
+Copy code
+npm test
+<Note>
+Feel free to contribute to this project by opening issues, submitting pull requests, or just by sharing ideas. Your contributions are always welcome!
+</Note>
+vbnet
+Copy code
+
+In the example above, `<Note>` is a made-up JSX component that you can use to represent a note. If you're using a component library or have custom components, you can replace `<Note>` with any of your custom components.
+
+Remember to replace `username` and `your-repo-name` with the correct details.
