@@ -1,0 +1,339 @@
+Using react:	
+Create a form component(s) so user can enter the next fields: First Name, Last Name, Email and Message
+
+Add a submit button so when user clicks on it the app will add entered values to the state 
+ChatGPT
+Certainly! You can create a form in React where the user can enter their First Name, Last Name, Email, and Message, and store these values in the component's state. Here's a simple example using functional components and the useState hook:
+
+jsx
+Copy code
+import React, { useState } from 'react';
+
+function FormComponent() {
+  // Define the state to hold the form fields
+  const [formState, setFormState] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: '',
+  });
+
+  // Define a function to handle changes to the form fields
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  // Define a function to handle the form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Here you can handle what you want to do with the form data,
+    // such as sending it to an API, or saving it to a parent component's state
+    console.log('Form submitted:', formState);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        First Name:
+        <input type="text" name="firstName" value={formState.firstName} onChange={handleChange} />
+      </label>
+      <br />
+      <label>
+        Last Name:
+        <input type="text" name="lastName" value={formState.lastName} onChange={handleChange} />
+      </label>
+      <br />
+      <label>
+        Email:
+        <input type="email" name="email" value={formState.email} onChange={handleChange} />
+      </label>
+      <br />
+      <label>
+        Message:
+        <textarea name="message" value={formState.message} onChange={handleChange} />
+      </label>
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+
+export default FormComponent;
+This code snippet declares a functional component with an internal state that tracks the form fields. The handleChange function is used to update the state as the user types into the form fields, and the handleSubmit function is used to handle the form submission.
+
+This example just logs the form data to the console when the form is submitted. In a real-world application, you would typically do something more useful with this data, such as sending it to a server or updating a parent component's state.
+
+
+
+
+User
+using validator npm package add validation for handleSubmit and block "submit" button if some field is not valid. 
+validation criterias:
+•	The `first_name` and `last_name` fields should be validated on the presents of information
+•	The `email` field should be validated on the correctness of the email entered
+•	The `message` field should be validated on the length of the message (minimum 10 characters)
+ChatGPT
+Certainly! You can use the validator npm package to apply the specified validation rules to the form fields. First, you'll need to install the package:
+
+bash
+Copy code
+npm install validator
+Once that's done, you can import it into your component and use it to validate the form fields as follows:
+
+jsx
+Copy code
+import React, { useState } from 'react';
+import validator from 'validator';
+
+function FormComponent() {
+  const [formState, setFormState] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: '',
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const validationErrors = validate(formState);
+    if (Object.keys(validationErrors).length === 0) {
+      // No validation errors
+      console.log('Form submitted:', formState);
+    } else {
+      setErrors(validationErrors);
+    }
+  };
+
+  const validate = (formState) => {
+    let errors = {};
+
+    if (!formState.firstName) errors.firstName = 'First name is required';
+    if (!formState.lastName) errors.lastName = 'Last name is required';
+    if (!validator.isEmail(formState.email)) errors.email = 'Enter a valid email address';
+    if (formState.message.length < 10) errors.message = 'Message must be at least 10 characters long';
+
+    return errors;
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        First Name:
+        <input type="text" name="firstName" value={formState.firstName} onChange={handleChange} />
+        {errors.firstName && <div className="error">{errors.firstName}</div>}
+      </label>
+      <br />
+      <label>
+        Last Name:
+        <input type="text" name="lastName" value={formState.lastName} onChange={handleChange} />
+        {errors.lastName && <div className="error">{errors.lastName}</div>}
+      </label>
+      <br />
+      <label>
+        Email:
+        <input type="email" name="email" value={formState.email} onChange={handleChange} />
+        {errors.email && <div className="error">{errors.email}</div>}
+      </label>
+      <br />
+      <label>
+        Message:
+        <textarea name="message" value={formState.message} onChange={handleChange} />
+        {errors.message && <div className="error">{errors.message}</div>}
+      </label>
+      <br />
+      <button type="submit" disabled={Object.keys(errors).length > 0}>Submit</button>
+    </form>
+  );
+}
+
+export default FormComponent;
+This code introduces a new errors state object, which is used to keep track of any validation errors. The validate function checks the form fields against the specified validation criteria and returns an object containing any errors that were found.
+
+The handleSubmit function calls validate and, if any errors are found, updates the errors state and prevents the form from being submitted.
+
+The component also includes error messages that are displayed next to the form fields if there are any validation errors, and the "Submit" button is disabled if there are any errors.
+
+
+
+
+User
+you need to use isEmpty to check if fields are not empty and use isLength to check the length from "validator"
+ChatGPT
+Certainly! You can update the code to use the isEmpty and isLength methods from the validator package as follows:
+
+jsx
+Copy code
+import React, { useState } from 'react';
+import validator from 'validator';
+
+function FormComponent() {
+  const [formState, setFormState] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: '',
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+    setErrors(validate(formState)); // Update errors as the user types
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const validationErrors = validate(formState);
+    if (Object.keys(validationErrors).length === 0) {
+      console.log('Form submitted:', formState);
+    } else {
+      setErrors(validationErrors);
+    }
+  };
+
+  const validate = (formState) => {
+    let errors = {};
+
+    if (validator.isEmpty(formState.firstName)) errors.firstName = 'First name is required';
+    if (validator.isEmpty(formState.lastName)) errors.lastName = 'Last name is required';
+    if (!validator.isEmail(formState.email)) errors.email = 'Enter a valid email address';
+    if (!validator.isLength(formState.message, { min: 10 })) errors.message = 'Message must be at least 10 characters long';
+
+    return errors;
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        First Name:
+        <input type="text" name="firstName" value={formState.firstName} onChange={handleChange} />
+        {errors.firstName && <div className="error">{errors.firstName}</div>}
+      </label>
+      <br />
+      <label>
+        Last Name:
+        <input type="text" name="lastName" value={formState.lastName} onChange={handleChange} />
+        {errors.lastName && <div className="error">{errors.lastName}</div>}
+      </label>
+      <br />
+      <label>
+        Email:
+        <input type="email" name="email" value={formState.email} onChange={handleChange} />
+        {errors.email && <div className="error">{errors.email}</div>}
+      </label>
+      <br />
+      <label>
+        Message:
+        <textarea name="message" value={formState.message} onChange={handleChange} />
+        {errors.message && <div className="error">{errors.message}</div>}
+      </label>
+      <br />
+      <button type="submit" disabled={Object.keys(errors).length > 0}>Submit</button>
+    </form>
+  );
+}
+
+export default FormComponent;
+Here, I've updated the validate function to use validator.isEmpty to check if the first_name and last_name fields are empty, and validator.isLength to check the length of the message field. The error messages and submit button behavior will respond accordingly.
+
+
+
+
+User
+add basic styling to the form make it in a separate .module.css file
+ChatGPT
+Sure! You can create a separate .module.css file for styling the form. Here's a basic example of how you can structure the CSS and the corresponding component code.
+
+Create a file named FormComponent.module.css:
+
+css
+Copy code
+/* FormComponent.module.css */
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: blue;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
+Now, you can import this CSS module in your React component and apply the classes:
+
+jsx
+Copy code
+import React, { useState } from 'react';
+import validator from 'validator';
+import styles from './FormComponent.module.css'; // Import the CSS module
+
+function FormComponent() {
+  // ... (Same as previous code)
+
+  return (
+    <div className={styles.form-container}>
+      <form onSubmit={handleSubmit}>
+        <label className={styles.label}>
+          First Name:
+          <input className={styles.input} type="text" name="firstName" value={formState.firstName} onChange={handleChange} />
+          {errors.firstName && <div className={styles.error}>{errors.firstName}</div>}
+        </label>
+        {/* ... (Other form fields, with similar changes) */}
+        <button type="submit" disabled={Object.keys(errors).length > 0}>Submit</button>
+      </form>
+    </div>
+  );
+}
+
+export default FormComponent;
+This code imports the CSS module and applies the classes to the form elements, giving them a basic styled appearance. You can, of course, modify the CSS to match your desired appearance.
